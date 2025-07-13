@@ -1,4 +1,4 @@
-import 'package:templete/Modules/Splash/splash_controller.dart';
+import 'package:Payment/Modules/Splash/splash_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';

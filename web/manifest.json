@@ -1,6 +1,6 @@
 {
-    "name": "templete",
-    "short_name": "templete",
+    "name": "Payment",
+    "short_name": "Payment",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

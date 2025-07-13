@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:templete/Modules/Splash/splash_data_handler.dart';
+import 'package:Payment/Modules/Splash/splash_data_handler.dart';
 import '../../Utilities/shared_preferences.dart';
 
 class SplashController extends ControllerMVC {

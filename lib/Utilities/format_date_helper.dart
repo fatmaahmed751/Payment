@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:templete/Utilities/shared_preferences.dart';
-import 'package:templete/Utilities/strings.dart';
-import 'package:templete/Utilities/theme_helper.dart';
-import 'package:templete/core/Language/locales.dart';
+import 'package:Payment/Utilities/shared_preferences.dart';
+import 'package:Payment/Utilities/strings.dart';
+import 'package:Payment/Utilities/theme_helper.dart';
+import 'package:Payment/core/Language/locales.dart';
 import 'package:timeago/timeago.dart' as timeago;
 class FormatDateHelper {
   static final formatter = DateFormat('EEEE d MMM yyyy',SharedPref.getCurrentLanguage());
