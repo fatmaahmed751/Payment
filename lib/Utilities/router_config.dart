@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../Modules/Cart/my_cart_screen.dart';
+import '../Modules/Payment/payment_screen.dart';
 import '../Modules/Splash/splash_screen.dart';
 BuildContext? get currentContext_ => GoRouterConfig.router.routerDelegate.navigatorKey.currentContext;
 class GoRouterConfig{
@@ -7,11 +9,33 @@ class GoRouterConfig{
   static final GoRouter _router = GoRouter(
     routes: <RouteBase>[
       GoRoute(
-        path: SplashScreen.routeName,
+        path: "/",
         pageBuilder: (_, GoRouterState state) {
           return getCustomTransitionPage(
             state: state,
             child: const SplashScreen(),
+          );
+        },
+        routes: const <RouteBase>[],
+      ),
+      GoRoute(
+        name: PaymentScreen.routeName,
+        path: "/${PaymentScreen.routeName}",
+        pageBuilder: (_, GoRouterState state) {
+          return getCustomTransitionPage(
+            state: state,
+            child: const PaymentScreen(),
+          );
+        },
+        routes: const <RouteBase>[],
+      ),
+      GoRoute(
+        name: MyCartScreen.routeName,
+        path: "/${MyCartScreen.routeName}",
+        pageBuilder: (_, GoRouterState state) {
+          return getCustomTransitionPage(
+            state: state,
+            child: const MyCartScreen(),
           );
         },
         routes: const <RouteBase>[],
