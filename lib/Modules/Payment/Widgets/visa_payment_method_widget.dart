@@ -29,7 +29,7 @@ class VisaPaymentMethodWidgetState extends StateMVC<VisaPaymentMethodWidget> {
             horizontal: 24.w, vertical: 20.h),
         // horizontal: 20.w, vertical: 30.h),(
         child:Form(
-          key: _formKey,
+         // key: _formKey,
           autovalidateMode: con.autoValidate?
           AutovalidateMode.always:
           AutovalidateMode.disabled,
@@ -59,7 +59,7 @@ class VisaPaymentMethodWidgetState extends StateMVC<VisaPaymentMethodWidget> {
               showBackView = creditCardModel.isCvvFocused;
               setState(() {});
             },
-            formKey: _formKey,
+           formKey: _formKey,
 
           )
                 ],

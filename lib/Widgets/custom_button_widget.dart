@@ -111,7 +111,7 @@ class CustomButtonWidget extends StatelessWidget {
         child: child ??
             Text(
               title ?? '',
-              style:textStyle?? TextStyleHelper.of(context).h_16.copyWith(
+              style:textStyle?? TextStyleHelper.of(context).h_20.copyWith(
                   color: getTitleColor(context),
 
               ),

@@ -7,8 +7,12 @@ class Assets {
   static const String imagesBrush = 'assets/images/brush.svg';
   static const String imagesDarkMode = 'assets/images/darkMode.svg';
   static const String imagesDarkOffer = 'assets/images/darkOffer.svg';
+  static const String imagesFilledRadioIcon = 'assets/images/filledRadioIcon.svg';
   static const String imagesFood = 'assets/images/food.png';
   static const String imagesLightMode = 'assets/images/lightMode.svg';
+  static const String imagesLightRadioIcon = 'assets/images/light_radio_icon.svg';
+  static const String imagesMastercardeIcon = 'assets/images/mastercardeIcon.png';
+  static const String imagesPayPali = 'assets/images/payPali.png';
   static const String imagesPayment = 'assets/images/payment.jpg';
   static const String imagesPaypal = 'assets/images/paypal.png';
   static const String imagesVisa = 'assets/images/visa.png';

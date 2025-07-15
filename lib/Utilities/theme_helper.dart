@@ -21,7 +21,7 @@ class ThemeClass extends ThemeModel{
   ThemeClass.lightTheme({
     super.isDark = false,
     super.background = const Color(0xffFFFFFF),
-    super.primaryColor = const Color(0xffFF7622),
+    super.primaryColor = const Color(0xffF68524),
     super.mainSecondary = const Color(0xff1B1F2F),
     super.secondary = const Color(0xffF5F6FA),
     super.labelColor = const Color(0xffDCDCDC),

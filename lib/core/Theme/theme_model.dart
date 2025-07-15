@@ -7,7 +7,7 @@ import '../../Utilities/theme_helper.dart';
 class ThemeModel extends ThemeExtension<ThemeModel>{
 
   static ThemeModel get defaultTheme{
-    return ThemeClass.darkTheme();
+    return ThemeClass.lightTheme();
     // Brightness brightness = SchedulerBinding.instance.platformDispatcher.platformBrightness;
     // return brightness == Brightness.dark? ThemeClass.darkTheme():ThemeClass.lightTheme();
   }

@@ -22,9 +22,9 @@ class SplashController extends ControllerMVC {
     // if(context.mounted) {
     //   GoRouter.of(context).go(MyCartScreen.routeName);
       if(SharedPref.isLogin()){
-      GoRouter.of(context).goNamed(MyCartScreen.routeName);
+   //   GoRouter.of(context).goNamed(MyCartScreen.routeName);
       }else{
-       GoRouter.of(context).goNamed(MyCartScreen.routeName);
+      GoRouter.of(context).goNamed(MyCartScreen.routeName);
       }
     }
   }

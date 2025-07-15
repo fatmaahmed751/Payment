@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../Utilities/strings.dart';
 import '../../generated/assets.dart';
-import 'Widgets/payment_success_methods_widget.dart';
+import '../Payment/Widgets/payment_success_methods_widget.dart';
 
 class PaymentController extends ControllerMVC {
 // singleton

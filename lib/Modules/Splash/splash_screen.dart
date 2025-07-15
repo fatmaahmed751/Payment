@@ -32,14 +32,16 @@ class _SplashScreenState extends StateMVC<SplashScreen> {
   Widget build(BuildContext context) {
     return  Scaffold(
       body: Container(
-        color: Colors.white,
+       color: Colors.white,
         child: Center(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+           // mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(Assets.imagesPayment, width: 240.r, height: 240.r,),
-              SizedBox(height: 100.h,),
-              const CircularProgressIndicator(),
+              Image.asset(Assets.imagesPayment,
+                width: double.infinity, height: 450.h),
+
+             // const CircularProgressIndicator(),
             ],
           ),
         ),

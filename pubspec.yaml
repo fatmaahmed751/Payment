@@ -156,6 +156,7 @@ dependencies:
   flutter_colorpicker: ^1.0.3
   ansicolor: ^2.0.2
   gap: ^3.0.1
+  flutter_stripe: ^11.5.0
   timeago: ^3.3.0
   flutter_credit_card: ^4.1.0
 
