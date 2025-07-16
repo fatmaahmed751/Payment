@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 import 'Utilities/git_it.dart';
 import 'Utilities/router_config.dart';
@@ -23,7 +24,7 @@ class MyHttpOverrides extends HttpOverrides{
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  Stripe.publishableKey = "pk_test_51RlIE8GaB6re3GlpS8Dy70awbegcjLU4KsralhJcuxOibzgAv0QBdGnNqcfaHDZfjlN5VkWkmkXDe8xclJI6iJlb00y7MjEosA";
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -84,3 +85,6 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
     PointerDeviceKind.mouse,
   };
 }
+// paymentintent object<=create payment intent (amount/currency) required
+//init paymentSheet(paymentIntentClientSecret)
+//presentPaymentSheet

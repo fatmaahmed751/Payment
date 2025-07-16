@@ -1,3 +1,5 @@
+import 'package:Payment/Models/payment_intent_input_model.dart';
+import 'package:Payment/Modules/Payment/payment_data_handler.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,39 +21,37 @@ class PaymentController extends ControllerMVC {
 
   bool loading = false, autoValidate = false;
   bool isClick = true;
-  int selectedMethod = 0;
-  late TextEditingController cardNumberController,
-      cardNameController,
-      expirationDateController,
-      cvvController;
+PaymentIntentInputModel? paymentIntentInputModel;
   @override
   void initState() {
-    cardNumberController = TextEditingController();
-    cardNameController = TextEditingController();
-    expirationDateController = TextEditingController();
-    cvvController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    cardNumberController.dispose();
-    cardNameController.dispose();
-    expirationDateController.dispose();
-    cvvController.dispose();
     super.dispose();
   }
 
-  void selectPaymentMethod(int method) {
-    if (selectedMethod == method) {
-      selectedMethod = 0;
-    } else {
-      selectedMethod = method;
-    }
-    setState(() {});
-  }
+paymentForProduct(PaymentIntentInputModel paymentIntentInputModel) async {
+    setState(() {
+      loading = true;
+    });
+    final result = await PaymentDataHandler.payment(
+        amount: paymentIntentInputModel.amount,
+        currency: paymentIntentInputModel.currency,
+        stripeSecretKey: "sk_test_51RlIE8GaB6re3GlpFytquseARIby7iSRadWluakO7V0DQyfAsOh1vvX30td8hjie71UL9lxrpepdB3pKr470dYPp00mqdAMFDG");
+    result.fold((l) {
+      print("Payment failed: ${l.errorModel.statusMessage}");
+      setState(() {
+        loading = false;
+      });
 
-  init() {}
+    }, (r) async {
+      setState(() {
+        loading = false;
+      });
+    });
+}
 
   // Future visaPaymentSuccess(BuildContext context) {
   //   return showModalBottomSheet(
