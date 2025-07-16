@@ -45,7 +45,9 @@ class ErrorMessageModel extends Equatable {
     }
   }
 
-  ErrorMessageModel({required this.statusCode, String? statusMessage, required this.requestApi, this.responseApi})
+  ErrorMessageModel({required this.statusCode, String? statusMessage,
+    required this.requestApi,
+    this.responseApi})
       : modelName = null,
         expectType = null,
         statusMessage = statusMessage ?? getStatusCodeName(statusCode);

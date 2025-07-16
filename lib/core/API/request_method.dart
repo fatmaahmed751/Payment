@@ -139,7 +139,7 @@ class _ApiBaseHelper {
           'content-type': 'application/json',
 
         if (!request.headers.containsKey('Authorization'))
-          "Authorization": 'Bearer ${SharedPref.getCurrentUser()?.token ?? ""}',
+         // "Authorization": 'Bearer ${SharedPref.getCurrentUser()?.token ?? ""}',
 
         if (!request.headers.containsKey('access-language'))
           "access-language": SharedPref.getLanguage() ?? "en",

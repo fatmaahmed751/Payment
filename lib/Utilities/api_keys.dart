@@ -1,0 +1,3 @@
+class ApiKeys{
+   static String paymentApiSecretKey = "sk_test_51RlIE8GaB6re3GlpFytquseARIby7iSRadWluakO7V0DQyfAsOh1vvX30td8hjie71UL9lxrpepdB3pKr470dYPp00mqdAMFDG";
+}
