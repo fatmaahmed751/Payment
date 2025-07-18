@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
+import 'Utilities/api_keys.dart';
 import 'Utilities/git_it.dart';
 import 'Utilities/router_config.dart';
 import 'core/Font/font_provider.dart';
@@ -24,7 +25,7 @@ class MyHttpOverrides extends HttpOverrides{
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey = "pk_test_51RlIE8GaB6re3GlpS8Dy70awbegcjLU4KsralhJcuxOibzgAv0QBdGnNqcfaHDZfjlN5VkWkmkXDe8xclJI6iJlb00y7MjEosA";
+  Stripe.publishableKey = ApiKeys.paymentPublishedKey;
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -85,6 +86,8 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
     PointerDeviceKind.mouse,
   };
 }
-// paymentintent object<=create payment intent (amount/currency) required
-//init paymentSheet(paymentIntentClientSecret)
+// paymentintent object<=create payment intent (amount/currency/customerId) required
+//keySecret createEphemeralKey(stripe version/customerId)
+//init paymentSheet(merchant display name,intent client secret,EphemeralKeySecret)
 //presentPaymentSheet
+//cus_ShPPxjuZGB5viQ

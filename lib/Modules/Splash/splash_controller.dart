@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:Payment/Modules/Splash/splash_data_handler.dart';
 import '../../Utilities/shared_preferences.dart';
-import '../Cart/my_cart_screen.dart';
+import '../Payment/payment_screen.dart';
 
 class SplashController extends ControllerMVC {
   // singleton
@@ -24,7 +24,7 @@ class SplashController extends ControllerMVC {
       if(SharedPref.isLogin()){
    //   GoRouter.of(context).goNamed(MyCartScreen.routeName);
       }else{
-      GoRouter.of(context).goNamed(MyCartScreen.routeName);
+      GoRouter.of(context).goNamed(PaymentScreen.routeName);
       }
     }
   }

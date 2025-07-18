@@ -24,28 +24,73 @@ class GenericRequest<T> {
         statusMessage: statusMessage,
       )
   );
+  Future<T> getObject({bool asFormUrlEncoded = false}) async {
+    dynamic response;
 
-  Future<T> getObject() async {
-    Map<String, dynamic> response;
-    if (method.body.isNotEmpty) {
-      response = await method.request();
-    } else {
-      response = await method.requestJson();
-    }
-    if (response["Data"] is! Map) {
-      throw errorModel(response,"data is not compatible with expected data",ExpectType.object);
-    }
-    try{
-      T result = fromMap(response["Data"]);
-      if(T is ModelValidation){
-        String? validateError = (result as ModelValidation).validate();
-        if(validateError!=null) throw errorModel(response,validateError,ExpectType.object);
+    try {
+      // تحديد طريقة الإرسال
+      if (asFormUrlEncoded) {
+        response = await method.requestFormUrlEncoded();
+      } else {
+        response = method.bodyJson.isNotEmpty
+            ? await method.requestJson()
+            : await method.request();
       }
-      return result;
-    }catch(e){
-      throw errorModel(response,e.toString(),ExpectType.object);
+
+      // لو الرد فيه "Data"، خديه، غير كده سيبي الرد زي ما هو
+      if (response is Map && response.containsKey("Data")) {
+        response = response["Data"];
+      }
+
+      // تحقق إن الاستجابة عبارة عن Map
+      if (response is! Map) {
+        throw errorModel(response, "data is not compatible with expected data", ExpectType.object);
+      }
+
+      try {
+        T result = fromMap(Map<String, dynamic>.from(response));
+// مش response["Data"]!
+
+        if (result is ModelValidation) {
+          String? validateError = result.validate();
+          if (validateError != null) {
+            throw errorModel(response, validateError, ExpectType.object);
+          }
+        }
+
+        return result;
+      } catch (e) {
+        throw errorModel(response, e.toString(), ExpectType.object);
+      }
+
+    } catch (e) {
+      throw errorModel(response, e.toString(), ExpectType.object);
     }
   }
+
+
+
+  // Future<T> getObject() async {
+  //   Map<String, dynamic> response;
+  //   if (method.body.isNotEmpty) {
+  //     response = await method.request();
+  //   } else {
+  //     response = await method.requestJson();
+  //   }
+  //   if (response["Data"] is! Map) {
+  //     throw errorModel(response,"data is not compatible with expected data",ExpectType.object);
+  //   }
+  //   try{
+  //     T result = fromMap(response["Data"]);
+  //     if(T is ModelValidation){
+  //       String? validateError = (result as ModelValidation).validate();
+  //       if(validateError!=null) throw errorModel(response,validateError,ExpectType.object);
+  //     }
+  //     return result;
+  //   }catch(e){
+  //     throw errorModel(response,e.toString(),ExpectType.object);
+  //   }
+  // }
 
   Future<List<T>> getList() async {
     Map<String, dynamic> response;

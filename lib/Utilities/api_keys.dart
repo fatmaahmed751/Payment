@@ -1,3 +1,5 @@
 class ApiKeys{
    static String paymentApiSecretKey = "sk_test_51RlIE8GaB6re3GlpFytquseARIby7iSRadWluakO7V0DQyfAsOh1vvX30td8hjie71UL9lxrpepdB3pKr470dYPp00mqdAMFDG";
+   static String paymentPublishedKey =  "pk_test_51RlIE8GaB6re3GlpS8Dy70awbegcjLU4KsralhJcuxOibzgAv0QBdGnNqcfaHDZfjlN5VkWkmkXDe8xclJI6iJlb00y7MjEosA";
+
 }

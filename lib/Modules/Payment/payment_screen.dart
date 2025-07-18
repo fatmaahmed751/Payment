@@ -1,281 +1,576 @@
-import "package:Payment/Modules/Payment/payment_controller.dart";
-import "package:flutter/material.dart";
-import "package:flutter_screenutil/flutter_screenutil.dart";
-import "package:flutter_svg/svg.dart";
-import "package:gap/gap.dart";
-import "package:mvc_pattern/mvc_pattern.dart";
-import "../../Utilities/strings.dart";
-import "../../Widgets/custom_app_bar_widget.dart";
-import "../../Widgets/custom_button_widget.dart";
-import "../../generated/assets.dart";
-import "Widgets/cash_payment_method_widget.dart";
-import "Widgets/visa_payment_method_widget.dart";
-import "package:flutter_svg/flutter_svg.dart";
-import "../../../Utilities/text_style_helper.dart";
-import "../../../Utilities/theme_helper.dart";
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mvc_pattern/mvc_pattern.dart';
+
+import '../../Models/payment_intent_input_model.dart';
+import '../../Utilities/strings.dart';
+import '../../Utilities/text_style_helper.dart';
+import '../../Utilities/theme_helper.dart';
+import '../../Widgets/app_colors.dart';
+import '../../Widgets/app_fonts.dart';
+import '../../Widgets/custom_button_widget.dart';
+import '../../Widgets/custom_text.dart';
+import '../../generated/assets.dart';
+import 'payment_controller.dart';
 
 class PaymentScreen extends StatefulWidget {
-  static const routeName = "PaymentScreen";
- // final ShippingProductModel shippingProductModel;
-  const PaymentScreen({super.key,
-   // required this.shippingProductModel
-  });
+  static const routeName = "cart";
+  const PaymentScreen({super.key});
 
   @override
-  createState() => PaymentScreenState();
+  createState() => _PaymentScreenState();
 }
 
-class PaymentScreenState extends StateMVC<PaymentScreen> {
-  PaymentScreenState() : super(PaymentController()) {
-    con = PaymentController();
+class _PaymentScreenState extends StateMVC<PaymentScreen> {
+  late PaymentController con;
+  _PaymentScreenState() : super(PaymentController()) {
+    con = controller as PaymentController;
   }
 
-  late PaymentController con;
+  int quantity = 1;
+  int price = 0;
+  late final ratingController;
+  late double rating;
+
+  double userRating = 3.0;
+  int ratingBarMode = 1;
+  double initialRating = 2.0;
+  bool isRTLMode = false;
+  bool isVertical = false;
+  int selectedMethod = 0;
+  IconData? selectedIcon;
+  void selectPaymentMethod(int method) {
+    if (selectedMethod == method) {
+      selectedMethod = 0; // Deselect if already selected
+    } else {
+      selectedMethod = method; // Select the chosen method
+    }
+    setState(() {}); // Trigger the UI to update
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    ratingController = TextEditingController(text: '3.0');
+    rating = initialRating;
+  }
 
   @override
   Widget build(BuildContext context) {
+    int price = 0;
+    int calculateStripeAmount(int quantity, double pricePerUnit) {
+      return (quantity * pricePerUnit * 100).toInt(); // ضرب × 100 = تحويل للجنيه إلى قرش
+    }
+
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size(0, 80.h),
-        child: CustomAppBarWidget.detailsScreen(
-          title: "paymentMethod",
-          icon: "",
-        ),
-      ),
-      body:
-      SafeArea(
-          child: ListView(
-            physics: const BouncingScrollPhysics(),
-            children: [
-              Padding(
-                padding: EdgeInsetsDirectional.symmetric(horizontal: 20.w),
-                child: togglePaymentsMethodsWidget(),
-              ),
-              con.isClick
-                  ? VisaPaymentMethodWidget()
-                  : CashPaymentMethodWidget(),
-              CustomButtonWidget.primary(
+      body: CustomScrollView(slivers: [
+        SliverAppBar(
+          flexibleSpace: FlexibleSpaceBar(
+            background: Image.asset(
+              Assets.imagesPizza,
+            //  "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D&w=1000&q=80",
 
-              )
-            ],
-          ),
-        ),
-
-    );
-  }
-  // Widget togglePaymentsMethodsWidget() {
-  //   final paymentMethods = [
-  //     {
-  //       'isSelected': con.isClick,
-  //       'onTap': () => setState(() => con.isClick = true),
-  //       'widget': SvgPicture.asset(
-  //         Assets.imagesVisalogo,
-  //         color: con.isClick
-  //             ? ThemeClass.of(context).background
-  //             : ThemeClass.of(context)
-  //             .secondaryBlackColor
-  //             .withAlpha((0.6 * 255).toInt()),
-  //       ),
-  //     },
-  //     {
-  //       'isSelected': !con.isClick,
-  //       'onTap': () => setState(() => con.isClick = false),
-  //       'widget': Text(
-  //         Strings.cash.tr,
-  //         textAlign: TextAlign.center,
-  //         style: TextStyleHelper.of(context).h_16.copyWith(
-  //           fontWeight: FontWeight.w600,
-  //           color: !con.isClick
-  //               ? ThemeClass.of(context).background
-  //               : ThemeClass.of(context)
-  //               .secondaryBlackColor
-  //               .withAlpha((0.6 * 255).toInt()),
-  //           decoration: TextDecoration.none,
-  //         ),
-  //       ),
-  //     }
-  //   ];
-  //
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     children: List.generate(paymentMethods.length, (index) {
-  //       final method = paymentMethods[index];
-  //       return Padding(
-  //         padding: EdgeInsetsDirectional.only(end: index == 0 ? 10.w : 0),
-  //         child: GestureDetector(
-  //           onTap: method['onTap'] as VoidCallback,
-  //           child: Container(
-  //             width: 170.w,
-  //             height: 56.h,
-  //             padding: EdgeInsetsDirectional.symmetric(
-  //               vertical: 16.h,
-  //               horizontal: 16.w,
-  //             ),
-  //             decoration: BoxDecoration(
-  //               color: method['isSelected'] as bool
-  //                   ? ThemeClass.of(context).primaryColor
-  //                   : Colors.transparent,
-  //               borderRadius: BorderRadius.circular(30.r),
-  //               border: Border.all(
-  //                 color: (method['isSelected'] as bool)
-  //                     ? Colors.transparent
-  //                     : ThemeClass.of(context)
-  //                     .secondaryBlackColor
-  //                     .withAlpha((0.6 * 255).toInt()),
-  //               ),
-  //             ),
-  //             clipBehavior: Clip.hardEdge,
-  //             child: Center(child: method['widget'] as Widget),
-  //           ),
-  //         ),
-  //       );
-  //     }),
-  //   );
-  // }
-
-  //
-  Widget togglePaymentsMethodsWidget() {
-    final theme = ThemeClass.of(context);
-    final secondaryBlackWithOpacity = theme.secondaryBlackColor.withOpacity(0.6);
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _buildPaymentMethodButton(
-          isActive: con.isClick,
-          child: SvgPicture.asset(
-            Assets.imagesVisaLogo,
-            color: con.isClick ? theme.background : secondaryBlackWithOpacity,
-          ),
-          onTap: () => _togglePaymentMethod(true),
-        ),
-        Gap(10.w),
-        _buildPaymentMethodButton(
-          isActive: !con.isClick,
-          child: Text(
-           " Strings.cash.tr",
-            textAlign: TextAlign.center,
-            style: TextStyleHelper.of(context).h_16.copyWith(
-              fontWeight: FontWeight.w600,
-              color: !con.isClick ? theme.background : secondaryBlackWithOpacity,
-              decoration: TextDecoration.none,
+              width: double.infinity,
+              fit: BoxFit.cover,
             ),
           ),
-          onTap: () => _togglePaymentMethod(false),
+          expandedHeight: 220,
+        ),
+        SliverToBoxAdapter(
+          child: Container(
+            decoration: const BoxDecoration(
+                // color: Colors.red,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(100),
+                    topRight: Radius.circular(
+                      50,
+                    ))),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              //mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 12,
+                ),
+                CustomText(text: "Pizza Mix Cheese"),
+                const SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.star,
+                      size: 16,
+                      color: AppColors.kPrimaryColor,
+                    ),
+                    CustomText(
+                      text: '4 Star Ratings',
+                      color: AppColors.kPrimaryColor,
+                      size: AppFontSize.s14,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    const Spacer(),
+                    Column(
+                      children: [
+                        CustomText(
+                          text: 'Rs.\$75',
+                          fontWeight: FontWeight.bold,
+                          size: 25,
+                        ),
+                        const CustomText(
+                          text: '/per Portion',
+                          fontWeight: FontWeight.normal,
+                          size: 12,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                CustomText(
+                  text: 'Description',
+                  color: AppColors.blackColor,
+                  size: AppFontSize.s16,
+                  fontWeight: FontWeight.bold,
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  //  width: 316,
+                  //height: 200,
+                  child: Text(
+                    'Lorem ipsum dolor sit amet,  consectetur adipiscing elit. Ornare leo non mollis id cursus. Eu euismod faucibus in leo malesuada',
+                    style: TextStyle(
+                        //  overflow: TextOverflow.ellipsis,
+                        height: 1.2,
+                        fontSize: 14,
+                        color: AppColors.lightGrey),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                CustomText(
+                  text: 'Customize your Order',
+                  color: AppColors.blackColor,
+                  size: AppFontSize.s16,
+                  fontWeight: FontWeight.bold,
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  width: 333.h,
+                  height: 45,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.0),
+                    color: AppColors.lightGrey.withOpacity(.2),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 3.0),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 7,
+                        ),
+                        CustomText(
+                            text: '- Select the size of portion -',
+                            size: AppFontSize.s14),
+                        Spacer(),
+                        IconButton(
+                          icon: Icon(Icons.arrow_drop_down),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Container(
+                  width: 333.h,
+                  height: 45,
+                  decoration: BoxDecoration(
+                    color: AppColors.lightGrey.withOpacity(.2),
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 3.0),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 7,
+                        ),
+                        CustomText(
+                            text: '- Select the ingredients -',
+                            size: AppFontSize.s14),
+                        Spacer(),
+                        IconButton(
+                          icon: Icon(Icons.arrow_drop_down),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Container(
+                  width: 333.h,
+                  height: 45,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 3.0),
+                    child: Row(children: [
+                      const CustomText(
+                          text: 'Number of Portion', size: AppFontSize.s14),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            quantity--;
+                            print(quantity);
+                          });
+                          if (quantity < 1) {
+                            quantity = 1;
+                            print('rrrrrrrrrrrrrrr');
+                          }
+
+                          //print(price);
+                        },
+                        child: Container(
+                          width: 50,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: AppColors.kPrimaryColor,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 1, color: AppColors.lightGrey)
+                            ],
+                          ),
+                          child: Center(
+                            child: Text(
+                              '-',
+                              style: TextStyle(
+                                  color: AppColors.whiteColor, fontSize: 18),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 2),
+                      Container(
+                        width: 50,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          //  color: AppColors.kPrimaryColor,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: AppColors.kPrimaryColor,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "$quantity",
+                            style: TextStyle(
+                                color: AppColors.kPrimaryColor, fontSize: 15),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 2),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            quantity++;
+                            print(quantity);
+                          });
+                        },
+                        child: Container(
+                          width: 50,
+                          height: 30,
+                          decoration: BoxDecoration(
+                              color: AppColors.kPrimaryColor,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                    blurRadius: 1, color: AppColors.lightGrey)
+                              ]),
+                          child: Center(
+                            child: Text(
+                              '+',
+                              style: TextStyle(
+                                  color: AppColors.whiteColor, fontSize: 15),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]),
+                  ),
+                ),
+                buildStack(price, calculateStripeAmount, context),
+              ],
+            ),
+          ),
+        ),
+      ]),
+    );
+  }
+
+  Stack buildStack(
+      int price,
+      int Function(int numberOfPieces, double pricePerPiece) calculatePrice,
+      BuildContext context) {
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Container(
+            width: 90.w,
+            height: 150.h,
+            decoration: BoxDecoration(
+                color: AppColors.kPrimaryColor,
+                borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(40),
+                    bottomRight: Radius.circular(40))),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 15.0),
+          child: Center(
+            child: Container(
+              height: 147.h,
+              width: 260.w,
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(10),
+                      topLeft: Radius.circular(40),
+                      bottomLeft: Radius.circular(40),
+                      bottomRight: Radius.circular(10)),
+                  color: Colors.white),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 13.0, bottom: 13),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    const CustomText(
+                      text: 'Total Price',
+                      fontWeight: FontWeight.w400,
+                      size: 14,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        // setState(() {
+                        price = calculatePrice((quantity), 75);
+                        // });
+                      },
+                      child: Text(
+                        'LKR \$${calculatePrice((quantity), 75)}',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
+                        ),
+                      ),
+                    ),
+                    // CustomText(text: '$price',
+                    //   fontWeight: FontWeight.bold,
+                    //   size: 18,),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20.0, left: 18),
+                      child: Container(
+                        //margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                        // padding: const EdgeInsets.only(right: 200.0),
+                        width: 175,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: AppColors.kPrimaryColor,
+                          borderRadius: BorderRadius.circular(100.0),
+                        ),
+
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  // GoRouter.of(context).pushNamed(PaymentScreen.routeName);
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return StatefulBuilder(
+                                          builder: (context, setState) =>
+                                              Center(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Card(
+                                                child: Container(
+                                                  width: 400.w,
+                                                  // height: 300.h,
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        ThemeClass.of(context)
+                                                            .background,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            40),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsetsDirectional
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    10.w,
+                                                                vertical: 15.h),
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      // mainAxisAlignment:
+                                                      //     MainAxisAlignment
+                                                      //         .center,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            IconButton(
+                                                              icon: selectedMethod ==
+                                                                      1
+                                                                  ? SvgPicture
+                                                                      .asset(Assets
+                                                                          .imagesFilledRadioIcon)
+                                                                  : SvgPicture
+                                                                      .asset(Assets
+                                                                          .imagesLightRadioIcon),
+                                                              onPressed: () {
+                                                                setState(() {
+                                                                  selectPaymentMethod(
+                                                                      1);
+                                                                });
+                                                              },
+                                                            ),
+                                                            Gap(5.w),
+                                                            SizedBox(
+                                                              width: 56.w,
+                                                              height: 36.h,
+                                                              child:
+                                                                  Image.asset(
+                                                                Assets
+                                                                    .imagesVisaLogo,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            IconButton(
+                                                                icon: selectedMethod ==
+                                                                        2
+                                                                    ? SvgPicture
+                                                                        .asset(Assets
+                                                                            .imagesFilledRadioIcon)
+                                                                    : SvgPicture
+                                                                        .asset(Assets
+                                                                            .imagesLightRadioIcon),
+                                                                onPressed: () {
+                                                                  setState(() {
+                                                                    selectPaymentMethod(
+                                                                        2);
+                                                                  });
+                                                                }),
+                                                            Image.asset(
+                                                              Assets
+                                                                  .imagesPayPali,
+                                                              width: 50.w,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Row(
+                                                          children: [
+                                                            IconButton(
+                                                              icon: selectedMethod ==
+                                                                      3
+                                                                  ? SvgPicture
+                                                                      .asset(Assets
+                                                                          .imagesFilledRadioIcon)
+                                                                  : SvgPicture
+                                                                      .asset(Assets
+                                                                          .imagesLightRadioIcon),
+                                                              onPressed: () {
+                                                                setState(() {
+                                                                  selectPaymentMethod(
+                                                                      3);
+                                                                });
+                                                              },
+                                                            ),
+                                                            Gap(5.w),
+                                                            Text(
+                                                              "Cash",
+                                                              style: TextStyleHelper
+                                                                      .of(
+                                                                          context)
+                                                                  .h_24
+                                                                  .copyWith(
+                                                                      color: Colors
+                                                                          .black),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        CustomButtonWidget
+                                                            .primary(
+                                                          onTap: () async {
+                                                            int quantity = 2;
+                                                            double
+                                                                pricePerUnit =
+                                                                75.0;
+
+                                                            int totalAmount =
+                                                                calculatePrice(
+                                                                    quantity,
+                                                                    pricePerUnit); // Stripe amount
+
+                                                            final inputModel =
+                                                                PaymentIntentInputModel(
+                                                              amount: totalAmount
+                                                                  .toString(), // Stripe expects string
+                                                              currency: "egp",
+                                                                  customerId: 'cus_ShPPxjuZGB5viQ'
+                                                            );
+context.pop();
+                                                            await con.makePayment(
+                                                                paymentIntentInputModel:
+                                                                    inputModel);
+                                                          },
+                                                          height: 45.h,
+                                                          title: "Pay Now",
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                },
+                                icon: Icon(
+                                  Icons.shopping_cart,
+                                  size: 22,
+                                  color: AppColors.whiteColor,
+                                )),
+                            const Text(
+                              'Add To Cart',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
       ],
     );
   }
-
-  void _togglePaymentMethod(bool isCard) {
-    setState(() {
-      con.isClick = isCard;
-    });
-  }
-
-  Widget _buildPaymentMethodButton({
-    required bool isActive,
-    required Widget child,
-    required VoidCallback onTap,
-  }) {
-    final theme = ThemeClass.of(context);
-    final secondaryBlackWithOpacity = theme.secondaryBlackColor.withOpacity(0.6);
-
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 16.w),
-        width: 170.w,
-        height: 56.h,
-        decoration: BoxDecoration(
-          color: isActive ? theme.primaryColor : Colors.transparent,
-          border: Border.all(
-            color: isActive ? Colors.transparent : secondaryBlackWithOpacity,
-          ),
-          borderRadius: BorderRadius.circular(30.r),
-        ),
-        clipBehavior: Clip.hardEdge,
-        child: Center(child: child),
-      ),
-    );
-  }
-//   Widget togglePaymentsMethodsWidget() => Row(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           GestureDetector(
-//             onTap: () {
-//               setState(() {
-//                 con.isClick = !con.isClick;
-//               });
-//             },
-//             child: Container(
-//               padding: EdgeInsetsDirectional.symmetric(
-//                   vertical: 20.h, horizontal: 16.w),
-//               width: 170.w,
-//               height: 56.h,
-//               decoration: BoxDecoration(
-//                   color: con.isClick
-//                       ? ThemeClass.of(context).primaryColor
-//                       : Colors.transparent,
-//                   border: Border.all(
-//                     color: con.isClick
-//                         ? Colors.transparent
-//                         : ThemeClass.of(context)
-//                             .secondaryBlackColor
-//                             .withAlpha((0.6* 255).toInt()),
-//                   ),
-//                   borderRadius: BorderRadius.circular(30.r)),
-//               clipBehavior: Clip.hardEdge,
-//               child: SvgPicture.asset(
-//                 Assets.imagesVisalogo,
-//                 color: con.isClick
-//                     ? ThemeClass.of(context).background
-//                     : ThemeClass.of(context)
-//                         .secondaryBlackColor
-//                         .withAlpha((0.6* 255).toInt()),
-//               ),
-//             ),
-//           ),
-//           Gap(10.w),
-//           GestureDetector(
-//             onTap: () {
-//               setState(() {
-//                 con.isClick = !con.isClick;
-//               });
-//             },
-//             child: Container(
-//               padding: EdgeInsetsDirectional.symmetric(
-//                   horizontal: 16.w, vertical: 16.h),
-//               width: 170.w,
-//               height: 56.h,
-//               decoration: BoxDecoration(
-//                 borderRadius: BorderRadius.circular(30.r),
-//                 color: !con.isClick
-//                     ? ThemeClass.of(context).primaryColor
-//                     : ThemeClass.of(context).background,
-//                 border: Border.all(
-//                   color: !con.isClick
-//                       ? Colors.transparent
-//                       : ThemeClass.of(context)
-//                           .secondaryBlackColor
-//                           .withAlpha((0.6* 255).toInt()),
-//                 ),
-//               ),
-//               clipBehavior: Clip.hardEdge,
-//               child: Text(
-//                 Strings.cash.tr,
-//                 textAlign: TextAlign.center,
-//                 style: TextStyleHelper.of(context).h_16.copyWith(
-//                     fontWeight: FontWeight.w600,
-//                     color: !con.isClick
-//                         ? ThemeClass.of(context).background
-//                         : ThemeClass.of(context)
-//                             .secondaryBlackColor
-//                             .withAlpha((0.6* 255).toInt()),
-//                     decoration: TextDecoration.none),
-//               ),
-//             ),
-//           ),
-//         ],
-//       );
- }
+}

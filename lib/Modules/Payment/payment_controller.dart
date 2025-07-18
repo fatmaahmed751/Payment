@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import '../../Models/ephemral_key_model.dart';
+import '../../Models/init_payment_sheet_model.dart';
 import '../../Models/payment_intent_model.dart';
 import '../../Utilities/api_keys.dart';
 import '../../Utilities/strings.dart';
 import '../../generated/assets.dart';
-import '../Payment/Widgets/payment_success_methods_widget.dart';
 
 class PaymentController extends ControllerMVC {
 // singleton
@@ -45,6 +46,31 @@ PaymentIntentInputModel? paymentIntentInputModel;
       amount: paymentIntentInputModel.amount,
       currency: paymentIntentInputModel.currency,
       secretKey: ApiKeys.paymentApiSecretKey,
+      customerId: paymentIntentInputModel.customerId
+    );
+
+    setState(() {
+      loading = false;
+    });
+
+    return result.fold(
+          (l) {
+        print("Payment failed: ${l.errorModel.statusMessage}");
+        return null;
+      },
+          (r) {
+        return r;
+      },
+    );
+  }
+  Future<EphemeralKeyModel?> createEphemeralKeyForCustomer(
+      {required String customerId}) async {
+    setState(() {
+      loading = true;
+    });
+
+    final result = await PaymentDataHandler.createEphemeralKey(
+      customerId: customerId
     );
 
     setState(() {
@@ -62,11 +88,15 @@ PaymentIntentInputModel? paymentIntentInputModel;
     );
   }
 
-Future initPaymentSheet({required String paymentIntentClientSecret })async{
+
+
+Future initPaymentSheet({required InitPaymentSheetModel initPaymentSheetModel })async{
   await Stripe.instance.initPaymentSheet(
       paymentSheetParameters: SetupPaymentSheetParameters(
-      merchantDisplayName: 'Flutter Stripe Store Demo',
-      paymentIntentClientSecret: paymentIntentClientSecret,
+      merchantDisplayName: 'Pizza Shop',
+      paymentIntentClientSecret: initPaymentSheetModel.clientSecret,
+        customerId: 'cus_ShPPxjuZGB5viQ',
+        customerEphemeralKeySecret: initPaymentSheetModel.ephemeralKeySecret
       )
   );
 }
@@ -81,11 +111,16 @@ Future initPaymentSheet({required String paymentIntentClientSecret })async{
 
   Future makePayment({required PaymentIntentInputModel paymentIntentInputModel})async{
     PaymentIntentModel?  paymentIntentModel = await paymentForProduct(paymentIntentInputModel);
+    EphemeralKeyModel? ephemeralKeyModel = await createEphemeralKeyForCustomer(customerId:paymentIntentInputModel.customerId);
     if (paymentIntentModel == null || paymentIntentModel.clientSecret == null) {
       print("Failed to create payment intent.");
       return;
     }
-    await initPaymentSheet(paymentIntentClientSecret:paymentIntentModel.clientSecret!);
+   var initPaymentSheetModel = InitPaymentSheetModel(
+       clientSecret: paymentIntentModel.clientSecret!,
+       customerId: paymentIntentInputModel.customerId,
+       ephemeralKeySecret:ephemeralKeyModel!.secret!);
+    await initPaymentSheet(initPaymentSheetModel:initPaymentSheetModel);
 await displayPaymentSheet();
   }
 }

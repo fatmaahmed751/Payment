@@ -109,6 +109,17 @@ class RequestApi {
     this.body = const {},
   });
 
+  Future<dynamic> requestFormUrlEncoded() async {
+    var request = http.Request(method, uri);
+
+    // الـ bodyFields مش body
+    request.bodyFields = body;
+
+    if (headers != null) request.headers.addAll(headers!);
+
+    return await _ApiBaseHelper.httpSendRequest(request, this);
+  }
+
   Future<dynamic> request({bool getResponseBytes = false}) async {
     debugPrint(uri.toString());
     debugPrint(json.encode(body));
