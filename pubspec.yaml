@@ -158,8 +158,9 @@ dependencies:
   gap: ^3.0.1
   flutter_stripe: ^11.5.0
   timeago: ^3.3.0
-  flutter_credit_card: ^4.1.0
-
+  #flutter_credit_card: ^4.1.0
+  flutter_paypal_payment: ^1.0.8
+  flutter_inappwebview: ^6.0.0
 dependency_overrides:
   intl: ^0.18.0
 

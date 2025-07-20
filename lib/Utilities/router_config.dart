@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../Modules/Payment/payment_screen.dart';
+import '../Modules/Payment/widgets/success_payment.dart';
 import '../Modules/Splash/splash_screen.dart';
 BuildContext? get currentContext_ => GoRouterConfig.router.routerDelegate.navigatorKey.currentContext;
 class GoRouterConfig{
@@ -28,17 +29,17 @@ class GoRouterConfig{
         },
         routes: const <RouteBase>[],
       ),
-      // GoRoute(
-      //   name: MyCartScreen.routeName,
-      //   path: "/${MyCartScreen.routeName}",
-      //   pageBuilder: (_, GoRouterState state) {
-      //     return getCustomTransitionPage(
-      //       state: state,
-      //       child: const MyCartScreen(),
-      //     );
-      //   },
-      //   routes: const <RouteBase>[],
-      // ),
+      GoRoute(
+        name: SuccessPayment.routeName,
+        path: "/${SuccessPayment.routeName}",
+        pageBuilder: (_, GoRouterState state) {
+          return getCustomTransitionPage(
+            state: state,
+            child: const SuccessPayment(),
+          );
+        },
+        routes: const <RouteBase>[],
+      ),
     ],
     // redirect: (BuildContext context, GoRouterState state) {
     //   if(!SharedPref.isLogin()) return LoginScreen.routeName;

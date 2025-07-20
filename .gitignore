@@ -15,6 +15,7 @@ migrate_working_dir/
 *.ipr
 *.iws
 .idea/
+# Ignore secrets file
 lib/Utilities/api_keys.dart
 lib/Modules/Payment/data_handler_ignore.dart
 # The .vscode folder contains launch configuration and tasks you configure in

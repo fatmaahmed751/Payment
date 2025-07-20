@@ -1,3 +1,4 @@
+import 'package:Payment/Modules/Payment/widgets/success_payment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -62,7 +63,8 @@ class _PaymentScreenState extends StateMVC<PaymentScreen> {
   Widget build(BuildContext context) {
     int price = 0;
     int calculateStripeAmount(int quantity, double pricePerUnit) {
-      return (quantity * pricePerUnit * 100).toInt(); // ضرب × 100 = تحويل للجنيه إلى قرش
+      return (quantity * pricePerUnit * 100)
+          .toInt(); // ضرب × 100 = تحويل للجنيه إلى قرش
     }
 
     return Scaffold(
@@ -71,7 +73,7 @@ class _PaymentScreenState extends StateMVC<PaymentScreen> {
           flexibleSpace: FlexibleSpaceBar(
             background: Image.asset(
               Assets.imagesPizza,
-            //  "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D&w=1000&q=80",
+              //  "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D&w=1000&q=80",
 
               width: double.infinity,
               fit: BoxFit.cover,
@@ -88,7 +90,7 @@ class _PaymentScreenState extends StateMVC<PaymentScreen> {
                     topRight: Radius.circular(
                       50,
                     ))),
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.only(left: 20.0, right: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               //mainAxisAlignment: MainAxisAlignment.start,
@@ -216,93 +218,89 @@ class _PaymentScreenState extends StateMVC<PaymentScreen> {
                 Container(
                   width: 333.h,
                   height: 45,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 3.0),
-                    child: Row(children: [
-                      const CustomText(
-                          text: 'Number of Portion', size: AppFontSize.s14),
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            quantity--;
-                            print(quantity);
-                          });
-                          if (quantity < 1) {
-                            quantity = 1;
-                            print('rrrrrrrrrrrrrrr');
-                          }
+                  child: Row(children: [
+                    const CustomText(
+                        text: 'Number of Portion', size: AppFontSize.s14),
+                    const Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          quantity--;
+                          print(quantity);
+                        });
+                        if (quantity < 1) {
+                          quantity = 1;
+                          print('rrrrrrrrrrrrrrr');
+                        }
 
-                          //print(price);
-                        },
-                        child: Container(
-                          width: 50,
-                          height: 30,
-                          decoration: BoxDecoration(
+                        //print(price);
+                      },
+                      child: Container(
+                        width: 50,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: AppColors.kPrimaryColor,
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(blurRadius: 1, color: AppColors.lightGrey)
+                          ],
+                        ),
+                        child: Center(
+                          child: Text(
+                            '-',
+                            style: TextStyle(
+                                color: AppColors.whiteColor, fontSize: 18),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 2),
+                    Container(
+                      width: 50,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        //  color: AppColors.kPrimaryColor,
+                        borderRadius: BorderRadius.circular(15),
+                        border: Border.all(
+                          color: AppColors.kPrimaryColor,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "$quantity",
+                          style: TextStyle(
+                              color: AppColors.kPrimaryColor, fontSize: 15),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 2),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          quantity++;
+                          print(quantity);
+                        });
+                      },
+                      child: Container(
+                        width: 50,
+                        height: 30,
+                        decoration: BoxDecoration(
                             color: AppColors.kPrimaryColor,
                             borderRadius: BorderRadius.circular(15),
                             boxShadow: [
                               BoxShadow(
                                   blurRadius: 1, color: AppColors.lightGrey)
-                            ],
-                          ),
-                          child: Center(
-                            child: Text(
-                              '-',
-                              style: TextStyle(
-                                  color: AppColors.whiteColor, fontSize: 18),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 2),
-                      Container(
-                        width: 50,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          //  color: AppColors.kPrimaryColor,
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            color: AppColors.kPrimaryColor,
-                          ),
-                        ),
+                            ]),
                         child: Center(
                           child: Text(
-                            "$quantity",
+                            '+',
                             style: TextStyle(
-                                color: AppColors.kPrimaryColor, fontSize: 15),
+                                color: AppColors.whiteColor, fontSize: 15),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 2),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            quantity++;
-                            print(quantity);
-                          });
-                        },
-                        child: Container(
-                          width: 50,
-                          height: 30,
-                          decoration: BoxDecoration(
-                              color: AppColors.kPrimaryColor,
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                    blurRadius: 1, color: AppColors.lightGrey)
-                              ]),
-                          child: Center(
-                            child: Text(
-                              '+',
-                              style: TextStyle(
-                                  color: AppColors.whiteColor, fontSize: 15),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ]),
-                  ),
+                    ),
+                  ]),
                 ),
                 buildStack(price, calculateStripeAmount, context),
               ],
@@ -525,18 +523,31 @@ class _PaymentScreenState extends StateMVC<PaymentScreen> {
 
                                                             final inputModel =
                                                                 PaymentIntentInputModel(
-                                                              amount: totalAmount
-                                                                  .toString(), // Stripe expects string
-                                                              currency: "egp",
-                                                                  customerId: 'cus_ShPPxjuZGB5viQ'
-                                                            );
-context.pop();
-                                                            await con.makePayment(
-                                                                paymentIntentInputModel:
-                                                                    inputModel);
+                                                                    amount: totalAmount
+                                                                        .toString(), // Stripe expects string
+                                                                    currency:
+                                                                        "egp",
+                                                                    customerId:
+                                                                        'cus_ShPPxjuZGB5viQ');
+                                                            if (selectedMethod ==
+                                                                1) {
+                                                              await con.makePayment(
+                                                                  paymentIntentInputModel:
+                                                                      inputModel);
+
+                                                              context.pop();
+                                                            } else {
+                                                              if (selectedMethod ==
+                                                                  2)
+                                                              setState(() {});
+                                                              con.testPayPallPayment(
+                                                                  context);
+                                                              //context.pop();
+                                                            }
                                                           },
                                                           height: 45.h,
                                                           title: "Pay Now",
+                                                          //(7#vW84I
                                                         )
                                                       ],
                                                     ),
