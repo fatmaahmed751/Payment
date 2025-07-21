@@ -11,21 +11,23 @@ class SplashController extends ControllerMVC {
     _this ??= SplashController._();
     return _this!;
   }
+
   static SplashController? _this;
+
   SplashController._();
 
 
-
-  Future init(BuildContext context)async{
+  Future init(BuildContext context) async {
     await SplashDataHandler.getCurrentUser();
-    // await Future.delayed(const Duration(seconds: 2));
-    // if(context.mounted) {
-    //   GoRouter.of(context).go(MyCartScreen.routeName);
-      if(SharedPref.isLogin()){
-   //   GoRouter.of(context).goNamed(MyCartScreen.routeName);
-      }else{
-      GoRouter.of(context).goNamed(PaymentScreen.routeName);
+    await Future.delayed(const Duration(seconds: 3));
+    if (context.mounted) {
+      GoRouter.of(context).go(PaymentScreen.routeName);
+      if (SharedPref.isLogin()) {
+        GoRouter.of(context).goNamed(PaymentScreen.routeName);
+      } else {
+        GoRouter.of(context).goNamed(PaymentScreen.routeName);
       }
     }
   }
+}
 

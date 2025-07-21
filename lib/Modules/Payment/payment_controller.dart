@@ -43,100 +43,154 @@ class PaymentController extends ControllerMVC {
     super.dispose();
   }
 
-  Future<PaymentIntentModel?> paymentForProduct(
-      PaymentIntentInputModel paymentIntentInputModel) async {
+  // Future<PaymentIntentModel?> paymentForProduct(
+  //     PaymentIntentInputModel paymentIntentInputModel) async {
+  //   setState(() {
+  //     loading = true;
+  //   });
+  //
+  //   final result = await PaymentDataHandler.payment(
+  //       amount: paymentIntentInputModel.amount,
+  //       currency: paymentIntentInputModel.currency,
+  //       secretKey: ApiKeys.paymentApiSecretKey,
+  //       customerId: paymentIntentInputModel.customerId);
+  //
+  //   setState(() {
+  //     loading = false;
+  //   });
+  //
+  //   return result.fold(
+  //     (l) {
+  //       print("Payment failed: ${l.errorModel.statusMessage}");
+  //       return null;
+  //     },
+  //     (r) {
+  //       return r;
+  //     },
+  //   );
+  // }
+  //
+  // Future<EphemeralKeyModel?> createEphemeralKeyForCustomer(
+  //     {required String customerId}) async {
+  //   setState(() {
+  //     loading = true;
+  //   });
+  //
+  //   final result =
+  //       await PaymentDataHandler.createEphemeralKey(customerId: customerId);
+  //
+  //   setState(() {
+  //     loading = false;
+  //   });
+  //
+  //   return result.fold(
+  //     (l) {
+  //       print("Payment failed: ${l.errorModel.statusMessage}");
+  //       return null;
+  //     },
+  //     (r) {
+  //       return r;
+  //     },
+  //   );
+  // }
+  //
+  // Future initPaymentSheet(
+  //     {required InitPaymentSheetModel initPaymentSheetModel}) async {
+  //   await Stripe.instance.initPaymentSheet(
+  //       //هذا يستدعي الدالة initPaymentSheet من مكتبة flutter_stripe.
+  //       paymentSheetParameters: SetupPaymentSheetParameters(
+  //           //نمرر هنا كائن من نوع SetupPaymentSheetParameters يحتوي على الإعدادات المطلوبة لتهيئة شاشة الدفع.
+  //           merchantDisplayName: 'Pizza Shop',
+  //           paymentIntentClientSecret: initPaymentSheetModel
+  //               .clientSecret, //المفتاح السري الخاص بنية الدفع/هذا هو المفتاح السري الخاص بـ PaymentIntent الذي تم إنشاؤه مسبقًا في السيرفر.
+  //           customerId: 'cus_ShPPxjuZGB5viQ', //initPaymentSheetModel.customerId
+  //           // customerEphemeralKeySecret: initPaymentSheetModel
+  //           //     .ephemeralKeySecret //مفتاح مؤقت خاص بالعميل
+  //           ));
+  // }
+  //
+  // Future<void> displayPaymentSheet(BuildContext context) async {
+  //   try {
+  //     await Stripe.instance.presentPaymentSheet();
+  //     print("Payment successful");
+  //     //Navigator.pop(context);
+  //     GoRouter.of(context).pushNamed(SuccessPayment.routeName);
+  //   } on Exception catch (e) {
+  //     print("Payment cancelled or failed: $e");
+  //   }
+  // }
+  //
+  // Future makePayment(
+  //     {required PaymentIntentInputModel paymentIntentInputModel}) async {
+  //   PaymentIntentModel? paymentIntentModel =
+  //       await paymentForProduct(paymentIntentInputModel);
+  //   EphemeralKeyModel? ephemeralKeyModel = await createEphemeralKeyForCustomer(
+  //       customerId: paymentIntentInputModel.customerId);
+  //   if (paymentIntentModel == null || paymentIntentModel.clientSecret == null) {
+  //     print("Failed to create payment intent.");
+  //     return;
+  //   }
+  //   var initPaymentSheetModel = InitPaymentSheetModel(
+  //       clientSecret: paymentIntentModel.clientSecret!,
+  //       customerId: paymentIntentInputModel.customerId,
+  //       ephemeralKeySecret: ephemeralKeyModel!.secret!);
+  //   await initPaymentSheet(initPaymentSheetModel: initPaymentSheetModel);
+  //   await displayPaymentSheet(currentContext_!);
+  // }
+  Future<PaymentIntentModel?> paymentForProduct(PaymentIntentInputModel paymentIntentInputModel) async {
     setState(() {
       loading = true;
     });
 
     final result = await PaymentDataHandler.payment(
-        amount: paymentIntentInputModel.amount,
-        currency: paymentIntentInputModel.currency,
-        secretKey: ApiKeys.paymentApiSecretKey,
-        customerId: paymentIntentInputModel.customerId);
+      amount: paymentIntentInputModel.amount,
+      currency: paymentIntentInputModel.currency,
+      customerId:paymentIntentInputModel.customerId ,
+      secretKey: ApiKeys.paymentApiSecretKey,
+    );
 
     setState(() {
       loading = false;
     });
 
     return result.fold(
-      (l) {
+          (l) {
         print("Payment failed: ${l.errorModel.statusMessage}");
         return null;
       },
-      (r) {
+          (r) {
         return r;
       },
     );
   }
 
-  Future<EphemeralKeyModel?> createEphemeralKeyForCustomer(
-      {required String customerId}) async {
-    setState(() {
-      loading = true;
-    });
-
-    final result =
-        await PaymentDataHandler.createEphemeralKey(customerId: customerId);
-
-    setState(() {
-      loading = false;
-    });
-
-    return result.fold(
-      (l) {
-        print("Payment failed: ${l.errorModel.statusMessage}");
-        return null;
-      },
-      (r) {
-        return r;
-      },
-    );
-  }
-
-  Future initPaymentSheet(
-      {required InitPaymentSheetModel initPaymentSheetModel}) async {
+  Future initPaymentSheet({required String paymentIntentClientSecret })async{
     await Stripe.instance.initPaymentSheet(
-        //هذا يستدعي الدالة initPaymentSheet من مكتبة flutter_stripe.
         paymentSheetParameters: SetupPaymentSheetParameters(
-            //نمرر هنا كائن من نوع SetupPaymentSheetParameters يحتوي على الإعدادات المطلوبة لتهيئة شاشة الدفع.
-            merchantDisplayName: 'Pizza Shop',
-            paymentIntentClientSecret: initPaymentSheetModel
-                .clientSecret, //المفتاح السري الخاص بنية الدفع/هذا هو المفتاح السري الخاص بـ PaymentIntent الذي تم إنشاؤه مسبقًا في السيرفر.
-            customerId: 'cus_ShPPxjuZGB5viQ', //initPaymentSheetModel.customerId
-            customerEphemeralKeySecret: initPaymentSheetModel
-                .ephemeralKeySecret //مفتاح مؤقت خاص بالعميل
-            ));
+          merchantDisplayName: 'Flutter Stripe Store Demo',
+          paymentIntentClientSecret: paymentIntentClientSecret,
+        )
+    );
   }
-
   Future<void> displayPaymentSheet(BuildContext context) async {
     try {
       await Stripe.instance.presentPaymentSheet();
-      print("Payment successful");
       GoRouter.of(context).pushNamed(SuccessPayment.routeName);
+      print("Payment successful");
     } on Exception catch (e) {
       print("Payment cancelled or failed: $e");
     }
   }
 
-  Future makePayment(
-      {required PaymentIntentInputModel paymentIntentInputModel}) async {
-    PaymentIntentModel? paymentIntentModel =
-        await paymentForProduct(paymentIntentInputModel);
-    EphemeralKeyModel? ephemeralKeyModel = await createEphemeralKeyForCustomer(
-        customerId: paymentIntentInputModel.customerId);
+  Future makePayment({required PaymentIntentInputModel paymentIntentInputModel,required BuildContext context})async{
+    PaymentIntentModel?  paymentIntentModel = await paymentForProduct(paymentIntentInputModel);
     if (paymentIntentModel == null || paymentIntentModel.clientSecret == null) {
       print("Failed to create payment intent.");
       return;
     }
-    var initPaymentSheetModel = InitPaymentSheetModel(
-        clientSecret: paymentIntentModel.clientSecret!,
-        customerId: paymentIntentInputModel.customerId,
-        ephemeralKeySecret: ephemeralKeyModel!.secret!);
-    await initPaymentSheet(initPaymentSheetModel: initPaymentSheetModel);
-    await displayPaymentSheet(currentContext_!);
+    await initPaymentSheet(paymentIntentClientSecret:paymentIntentModel.clientSecret!);
+    await displayPaymentSheet(context);
   }
-
   void testPayPallPayment(BuildContext context) {
     var amount = AmountModel(
         total: "100",
@@ -180,8 +234,16 @@ class PaymentController extends ControllerMVC {
         ],
         note: "Contact us for any questions on your order.",
         onSuccess: (Map params) async {
-          Navigator.pop(context);
-        GoRouter.of(context).pushNamed(SuccessPayment.routeName);
+//           Navigator.pushAndRemoveUntil(context,
+//               MaterialPageRoute(builder: (context){
+// return const SuccessPayment();
+//               }),
+//              ModalRoute.withName(SuccessPayment.routeName)
+//           );
+            //  (predicate);
+Navigator.pop(context);
+        GoRouter.of(context).pushNamed
+          (SuccessPayment.routeName);
         },
         onError: (error) {
           log("onError :$error");

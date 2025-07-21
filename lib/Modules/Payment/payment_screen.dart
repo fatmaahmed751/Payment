@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../Models/payment_intent_input_model.dart';
@@ -63,13 +64,17 @@ class _PaymentScreenState extends StateMVC<PaymentScreen> {
   Widget build(BuildContext context) {
     int price = 0;
     int calculateStripeAmount(int quantity, double pricePerUnit) {
-      return (quantity * pricePerUnit * 100)
+      return (quantity * pricePerUnit *  100.0)
           .toInt(); // ضرب × 100 = تحويل للجنيه إلى قرش
     }
-
+    String formatPrice(double amount) {
+      final formatter = NumberFormat("#,##0.00", "fr_FR"); // تستخدم الفاصلة بدلاً من النقطة
+      return formatter.format(amount);
+    }
     return Scaffold(
       body: CustomScrollView(slivers: [
         SliverAppBar(
+      backgroundColor:Colors.white,
           flexibleSpace: FlexibleSpaceBar(
             background: Image.asset(
               Assets.imagesPizza,
@@ -83,10 +88,10 @@ class _PaymentScreenState extends StateMVC<PaymentScreen> {
         ),
         SliverToBoxAdapter(
           child: Container(
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration(
                 // color: Colors.red,
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(100),
+                    topLeft: Radius.circular(100.r),
                     topRight: Radius.circular(
                       50,
                     ))),
@@ -313,7 +318,7 @@ class _PaymentScreenState extends StateMVC<PaymentScreen> {
 
   Stack buildStack(
       int price,
-      int Function(int numberOfPieces, double pricePerPiece) calculatePrice,
+      int Function(int numberOfPieces, double pricePerPiece) calculateStripeAmount,
       BuildContext context) {
     return Stack(
       children: [
@@ -355,11 +360,11 @@ class _PaymentScreenState extends StateMVC<PaymentScreen> {
                     TextButton(
                       onPressed: () {
                         // setState(() {
-                        price = calculatePrice((quantity), 75);
+                        price = calculateStripeAmount((quantity), 75/100.0);
                         // });
                       },
                       child: Text(
-                        'LKR \$${calculatePrice((quantity), 75)}',
+                        'LKR \$${calculateStripeAmount((quantity), 75/100.0)}',
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -511,15 +516,18 @@ class _PaymentScreenState extends StateMVC<PaymentScreen> {
                                                         CustomButtonWidget
                                                             .primary(
                                                           onTap: () async {
-                                                            int quantity = 2;
+                                                           // int quantity = 2;
                                                             double
                                                                 pricePerUnit =
                                                                 75.0;
 
                                                             int totalAmount =
-                                                                calculatePrice(
-                                                                    quantity,
-                                                                    pricePerUnit); // Stripe amount
+                                                          calculateStripeAmount(
+                                                              quantity,
+                                                                    pricePerUnit);
+                                                            // double amountInEGP = widget.stripeAmount / 100.0;
+                                                            //
+                                                            // String formatted = formatPrice(amountInEGP);// Stripe amount
 
                                                             final inputModel =
                                                                 PaymentIntentInputModel(
@@ -532,10 +540,10 @@ class _PaymentScreenState extends StateMVC<PaymentScreen> {
                                                             if (selectedMethod ==
                                                                 1) {
                                                               await con.makePayment(
+                                                                  context: context,
                                                                   paymentIntentInputModel:
                                                                       inputModel);
 
-                                                              context.pop();
                                                             } else {
                                                               if (selectedMethod ==
                                                                   2)
