@@ -109,6 +109,17 @@ class RequestApi {
     this.body = const {},
   });
 
+  Future<dynamic> requestFormUrlEncoded() async {
+    var request = http.Request(method, uri);
+
+    // الـ bodyFields مش body
+    request.bodyFields = body;
+
+    if (headers != null) request.headers.addAll(headers!);
+
+    return await _ApiBaseHelper.httpSendRequest(request, this);
+  }
+
   Future<dynamic> request({bool getResponseBytes = false}) async {
     debugPrint(uri.toString());
     debugPrint(json.encode(body));
@@ -133,13 +144,25 @@ class _ApiBaseHelper {
   static Future<dynamic> httpSendRequest(http.BaseRequest request,RequestApi requestApi,{bool getResponseBytes = false}) async {
     http.StreamedResponse response;
     try {
-
+// استخدم headers من request نفسه، لو مش موجودة ضيف الإفتراضي
       request.headers.addAll({
-        // 'Accept': '*/*',
-        'content-type': 'application/json',
-        "access-language": SharedPref.getLanguage() ?? "en",
-        // "Authorization": 'Bearer ${SharedPref.getCurrentUser()?.token.toString()}',
+        if (!request.headers.containsKey('content-type'))
+          'content-type': 'application/json',
+
+        if (!request.headers.containsKey('Authorization'))
+         // "Authorization": 'Bearer ${SharedPref.getCurrentUser()?.token ?? ""}',
+
+        if (!request.headers.containsKey('access-language'))
+          "access-language": SharedPref.getLanguage() ?? "en",
       });
+
+      // request.headers.addAll({
+      //   // 'Accept': '*/*',
+      //   'content-type': 'application/json',
+      //   "access-language": SharedPref.getLanguage() ?? "en",
+      //   "Authorization": 'sk_test_51RlIE8GaB6re3GlpFytquseARIby7iSRadWluakO7V0DQyfAsOh1vvX30td8hjie71UL9lxrpepdB3pKr470dYPp00mqdAMFDG'
+      //   //'Bearer ${SharedPref.getCurrentUser()?.token.toString()}',
+      // });
 
       response = await request.send().timeout(const Duration(seconds: 180));
       AnsiPen pen = AnsiPen()..green(bold: true);

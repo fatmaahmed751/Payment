@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:templete/core/Font/font_provider.dart';
+import 'package:Payment/core/Font/font_provider.dart';
 import '../core/Language/app_languages.dart';
 import '../core/Theme/theme_model.dart';
 import '../Models/user_model.dart';

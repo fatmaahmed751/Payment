@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:templete/Utilities/theme_helper.dart';
+import 'package:Payment/Utilities/theme_helper.dart';
 
 import '../core/Font/font_provider.dart';
 

@@ -1,11 +1,15 @@
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
+import 'Utilities/api_keys.dart';
 import 'Utilities/git_it.dart';
 import 'Utilities/router_config.dart';
 import 'core/Font/font_provider.dart';
@@ -23,7 +27,10 @@ class MyHttpOverrides extends HttpOverrides{
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  Stripe.publishableKey = ApiKeys.paymentPublishedKey;
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -59,7 +66,7 @@ class EntryPoint extends StatelessWidget {
         scrollBehavior: MyCustomScrollBehavior(),
         routerConfig: GoRouterConfig.router,
         debugShowCheckedModeBanner: false,
-        title: 'template',
+        title: 'Payment',
         locale: Locale(appLan.appLang.name),
         theme: appTheme.appThemeMode,
         supportedLocales: Languages.values.map((e) => Locale(e.name)).toList(),
@@ -84,3 +91,9 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
     PointerDeviceKind.mouse,
   };
 }
+// paymentintent object<=create payment intent (amount/currency/customerId) required
+//keySecret createEphemeralKey(stripe version/customerId)
+//init paymentSheet(merchant display name,intent client secret,EphemeralKeySecret)
+//presentPaymentSheet
+//cus_ShPPxjuZGB5viQ
+// git rm --cached lib/Utilities/api_keys.dart
