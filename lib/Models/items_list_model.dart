@@ -15,6 +15,7 @@ class ItemsListModel {
     this.items,
   });
 
+
   factory ItemsListModel.fromJson(Map<String, dynamic> json) => ItemsListModel(
     items: json["items"] == null ? [] : List<OrderOfItem>.from(json["items"]!.map((x) => OrderOfItem.fromJson(x))),
   );
