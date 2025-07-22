@@ -1,0 +1,2 @@
+C:/Users/NoteBook/AndroidStudioProjects/Payment/android/app/.cxx/RelWithDebInfo/2g5u542k/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/NoteBook/AndroidStudioProjects/Payment/android/app/.cxx/RelWithDebInfo/2g5u542k/x86_64/CMakeFiles/rebuild_cache.dir

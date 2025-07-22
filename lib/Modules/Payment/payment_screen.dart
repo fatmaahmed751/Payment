@@ -1,7 +1,6 @@
 import 'package:Payment/Modules/Payment/widgets/success_payment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -430,22 +429,22 @@ class _PaymentScreenState extends StateMVC<PaymentScreen> {
                                                       children: [
                                                         Row(
                                                           children: [
-                                                            IconButton(
-                                                              icon: selectedMethod ==
-                                                                      1
-                                                                  ? SvgPicture
-                                                                      .asset(Assets
-                                                                          .imagesFilledRadioIcon)
-                                                                  : SvgPicture
-                                                                      .asset(Assets
-                                                                          .imagesLightRadioIcon),
-                                                              onPressed: () {
-                                                                setState(() {
-                                                                  selectPaymentMethod(
-                                                                      1);
-                                                                });
-                                                              },
-                                                            ),
+                                                            // IconButton(
+                                                            //   icon: selectedMethod ==
+                                                            //           1
+                                                            //       ? SvgPicture
+                                                            //           .asset(Assets
+                                                            //               .imagesFilledRadioIcon)
+                                                            //       : SvgPicture
+                                                            //           .asset(Assets
+                                                            //               .imagesLightRadioIcon),
+                                                            //   onPressed: () {
+                                                            //     setState(() {
+                                                            //       selectPaymentMethod(
+                                                            //           1);
+                                                            //     });
+                                                            //   },
+                                                            // ),
                                                             Gap(5.w),
                                                             SizedBox(
                                                               width: 56.w,
@@ -460,21 +459,21 @@ class _PaymentScreenState extends StateMVC<PaymentScreen> {
                                                         ),
                                                         Row(
                                                           children: [
-                                                            IconButton(
-                                                                icon: selectedMethod ==
-                                                                        2
-                                                                    ? SvgPicture
-                                                                        .asset(Assets
-                                                                            .imagesFilledRadioIcon)
-                                                                    : SvgPicture
-                                                                        .asset(Assets
-                                                                            .imagesLightRadioIcon),
-                                                                onPressed: () {
-                                                                  setState(() {
-                                                                    selectPaymentMethod(
-                                                                        2);
-                                                                  });
-                                                                }),
+                                                            // IconButton(
+                                                            //     icon: selectedMethod ==
+                                                            //             2
+                                                            //         ? SvgPicture
+                                                            //             .asset(Assets
+                                                            //                 .imagesFilledRadioIcon)
+                                                            //         : SvgPicture
+                                                            //             .asset(Assets
+                                                            //                 .imagesLightRadioIcon),
+                                                            //     onPressed: () {
+                                                            //       setState(() {
+                                                            //         selectPaymentMethod(
+                                                            //             2);
+                                                            //       });
+                                                            //     }),
                                                             Image.asset(
                                                               Assets
                                                                   .imagesPayPali,
@@ -484,22 +483,22 @@ class _PaymentScreenState extends StateMVC<PaymentScreen> {
                                                         ),
                                                         Row(
                                                           children: [
-                                                            IconButton(
-                                                              icon: selectedMethod ==
-                                                                      3
-                                                                  ? SvgPicture
-                                                                      .asset(Assets
-                                                                          .imagesFilledRadioIcon)
-                                                                  : SvgPicture
-                                                                      .asset(Assets
-                                                                          .imagesLightRadioIcon),
-                                                              onPressed: () {
-                                                                setState(() {
-                                                                  selectPaymentMethod(
-                                                                      3);
-                                                                });
-                                                              },
-                                                            ),
+                                                            // IconButton(
+                                                            //   icon: selectedMethod ==
+                                                            //           3
+                                                            //       ? SvgPicture
+                                                            //           .asset(Assets
+                                                            //               .imagesFilledRadioIcon)
+                                                            //       : SvgPicture
+                                                            //           .asset(Assets
+                                                            //               .imagesLightRadioIcon),
+                                                            //   onPressed: () {
+                                                            //     setState(() {
+                                                            //       selectPaymentMethod(
+                                                            //           3);
+                                                            //     });
+                                                            //   },
+                                                            // ),
                                                             Gap(5.w),
                                                             Text(
                                                               "Cash",

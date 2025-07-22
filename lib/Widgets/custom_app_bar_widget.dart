@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import '../Utilities/shared_preferences.dart';
@@ -190,9 +189,7 @@ class MainAppBarWidget extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsetsDirectional.symmetric(
                               horizontal: 6.w, vertical: 6.h),
-                          child: SvgPicture.asset(
-                           ""
-                          ),
+
                         )),
                   ),
                   Gap(8.w),
@@ -209,9 +206,7 @@ class MainAppBarWidget extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsetsDirectional.symmetric(
                               horizontal: 6.w, vertical: 6.h),
-                          child: SvgPicture.asset(
-                     ""
-                          ),
+
                         )),
                   ),
                 ],
@@ -250,7 +245,7 @@ class MainDetailsAppBarWidget extends StatelessWidget {
                 icon: Transform.flip(
                     flipX:
                         SharedPref.getCurrentLanguage() == "ar" ? true : false,
-                    child: SvgPicture.asset("")),
+                  ),
                 onPressed: () {
                   context.pop();
                 }),
@@ -344,9 +339,7 @@ class SecondaryAppBarWidgetState extends State<SecondaryAppBarWidget> {
                             child: Padding(
                               padding: EdgeInsetsDirectional.symmetric(
                                   horizontal: 6.w, vertical: 6.h),
-                              child: SvgPicture.asset(
-                            ""
-                              ),
+
                             )),
                       ),
                       Gap(8.w),
@@ -363,9 +356,7 @@ class SecondaryAppBarWidgetState extends State<SecondaryAppBarWidget> {
                             child: Padding(
                               padding: EdgeInsetsDirectional.symmetric(
                                   horizontal: 6.w, vertical: 6.h),
-                              child: SvgPicture.asset(
-                               "",
-                              ),
+
                             )),
                       ),
                     ],
@@ -473,7 +464,6 @@ class GradientAppBarWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.baseline,
           textBaseline: TextBaseline.alphabetic,
           children: [
-            IconButton(icon: SvgPicture.asset(icon!), onPressed: onPressed),
             Gap(50.w),
             const Spacer(),
           ],
