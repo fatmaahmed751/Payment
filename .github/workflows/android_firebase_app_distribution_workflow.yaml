@@ -19,10 +19,19 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Install Flutter
+      - name: install Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+
+      - name: Create directory for api_keys
+        run: mkdir -p lib/Utilities
+
+      - name: Inject api_keys.dart
+        run: |
+          cat <<EOF > lib/Utilities/api_keys.dart
+          ${{ secrets.API_KEYS_FILE }}
+          EOF
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
