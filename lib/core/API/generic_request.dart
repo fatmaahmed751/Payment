@@ -49,8 +49,6 @@ class GenericRequest<T> {
 
       try {
         T result = fromMap(Map<String, dynamic>.from(response));
-// مش response["Data"]!
-
         if (result is ModelValidation) {
           String? validateError = result.validate();
           if (validateError != null) {

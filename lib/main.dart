@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'Modules/Auth/auth_provider.dart';
 import 'firebase_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -16,6 +18,7 @@ import 'core/Font/font_provider.dart';
 import 'core/Language/app_languages.dart';
 import 'core/Language/locales.dart';
 import 'core/Theme/theme_provider.dart';
+import 'package:clarity_flutter/clarity_flutter.dart';
 
 class MyHttpOverrides extends HttpOverrides{
   @override
@@ -27,10 +30,15 @@ class MyHttpOverrides extends HttpOverrides{
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final config = ClarityConfig(
+    projectId: "stuj6bv89f", // من لوحة Clarity
+    logLevel: LogLevel.Verbose, // استعماله التدريجي؛ في البيئة الحية يستخدم None
+  );
   Stripe.publishableKey = ApiKeys.paymentPublishedKey;
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -44,10 +52,12 @@ Future<void> main() async {
           ChangeNotifierProvider<AppLanguage>(create: (_) => AppLanguage()),
           ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
           ChangeNotifierProvider<FontProvider>(create: (_) => FontProvider()),
+          ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
         ],
-        child: const EntryPoint(),
-      )
-  );
+        child:  ClarityWidget(
+          app: const EntryPoint(),
+          clarityConfig: config,
+        )));
 }
 
 

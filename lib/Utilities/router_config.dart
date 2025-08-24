@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../Modules/Clarity/clarity_test.dart';
 import '../Modules/Payment/payment_screen.dart';
 import '../Modules/Payment/widgets/success_payment.dart';
 import '../Modules/Splash/splash_screen.dart';
+import '../Modules/Auth/login_screen.dart';
+import '../Modules/Auth/home_screen.dart';
 BuildContext? get currentContext_ => GoRouterConfig.router.routerDelegate.navigatorKey.currentContext;
 class GoRouterConfig{
   static GoRouter get router => _router;
@@ -29,6 +32,19 @@ class GoRouterConfig{
         },
         routes: const <RouteBase>[],
       ),
+
+
+      GoRoute(
+        name: ClarityTestScreen.routeName,
+        path: "/${ClarityTestScreen.routeName}",
+        pageBuilder: (_, GoRouterState state) {
+          return getCustomTransitionPage(
+            state: state,
+            child: const ClarityTestScreen(),
+          );
+        },
+        routes: const <RouteBase>[],
+      ),
       GoRoute(
         name: SuccessPayment.routeName,
         path: "/${SuccessPayment.routeName}",
@@ -36,6 +52,28 @@ class GoRouterConfig{
           return getCustomTransitionPage(
             state: state,
             child: const SuccessPayment(),
+          );
+        },
+        routes: const <RouteBase>[],
+      ),
+      GoRoute(
+        name: LoginScreen.routeName,
+        path: "/${LoginScreen.routeName}",
+        pageBuilder: (_, GoRouterState state) {
+          return getCustomTransitionPage(
+            state: state,
+            child: const LoginScreen(),
+          );
+        },
+        routes: const <RouteBase>[],
+      ),
+      GoRoute(
+        name: HomeScreen.routeName,
+        path: "/${HomeScreen.routeName}",
+        pageBuilder: (_, GoRouterState state) {
+          return getCustomTransitionPage(
+            state: state,
+            child: const HomeScreen(),
           );
         },
         routes: const <RouteBase>[],
