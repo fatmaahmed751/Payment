@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:http/http.dart';
 import '../../Models/user_model.dart';
 import '../../Utilities/api_end_point.dart';
 import '../../core/API/generic_request.dart';
@@ -10,7 +11,8 @@ class SplashDataHandler{
   static Future<Either<Failure,UserModel>> getCurrentUser()async{
     try {
       UserModel response = await GenericRequest<UserModel>(
-        method: RequestApi.get(url: APIEndPoint.test),
+        path: APIEndPoint.test,
+        method: RequestMethod.GET,
         fromMap: UserModel.fromJson,
       ).getObject();
       return Right(response);

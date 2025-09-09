@@ -142,7 +142,7 @@ class PaymentController extends ControllerMVC {
       loading = true;
     });
 
-    final result = await PaymentDataHandler.payment(
+    final result = await PaymentDataHandler.createPaymentIntent(
       amount: paymentIntentInputModel.amount,
       currency: paymentIntentInputModel.currency,
       customerId:paymentIntentInputModel.customerId ,

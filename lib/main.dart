@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'Modules/Auth/auth_provider.dart';
+import 'core/API/request_method.dart';
 import 'firebase_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -30,6 +32,72 @@ class MyHttpOverrides extends HttpOverrides{
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //
+  //   final client = ApiClient();
+  //
+  // try {
+  //   final dio = Dio();
+  //
+  //   final response = await dio.get(
+  //     "https://newsapi.org/v2/everything",
+  //     queryParameters: {
+  //       "q": "tesla",
+  //       "from": "2025-08-09",
+  //       "sortBy": "publishedAt",
+  //       "apiKey": "77ef2ede7d4c4255a48ef0c8ce9d93a7", // ✅ ضيفي apiKey هنا صراحة
+  //     },
+  //   );
+  //
+  //   print("✅✅✅ نجاح خارق:");
+  //   print(response.data);
+  //
+  //   if (response.data is Map && response.data.containsKey('articles')) {
+  //     final articles = response.data['articles'] as List;
+  //     print('📰 عدد الأخبار: ${articles.length}');
+  //   }
+  //
+  // } catch (e) {
+  //   print("🔥🔥🔥 خطأ مباشر: $e");
+  //   if (e is DioException) {
+  //     print("📄 Response Body: ${e.response?.data}");
+  //     print("🔢 Status Code: ${e.response?.statusCode}");
+  //   }
+  // }
+  //
+  //   //   final response = await client.get(
+  //   //     "everything",
+  //   //     query: {
+  //   //       "q": "tesla",
+  //   //       "from": "2024-08-09", // ⚠️ تاريخ في المستقبل! غيّره لـ تاريخ سابق
+  //   //       "sortBy": "publishedAt",
+  //   //       // apiKey هيتضاف تلقائيًا من الـ interceptor
+  //   //     },
+  //   //   );
+  //   //
+  //   //   // ✅ طباعة الرد في الكونسول
+  //   //   print("✅ Response Data:");
+  //   //   print(response.data);
+  //   //
+  //   //   // لو عاوزة تطبع عدد الأخبار مثلاً
+  //   //   if (response.data is Map && response.data.containsKey('articles')) {
+  //   //     final articles = response.data['articles'] as List;
+  //   //     print('📰 عدد الأخبار: ${articles.length}');
+  //   //   }
+  //   //
+  //   // // } on DioException catch (e) {
+  //   // //   print("❌ Error: ${e.message}");
+  //   // //   if (e.response != null) {
+  //   // //     print("Status Code: ${e.response?.statusCode}");
+  //   // //     print("Response Data: ${e.response?.data}");
+  //   // //   }
+  //   // } catch (e) {
+  //   //   print("❌❌ خطأ عام: $e"); // ✅ هتطلعي لك التفاصيل الحقيقية هنا
+  //   //   if (e is DioException && e.response != null) {
+  //   //     print("📄 Response Body: ${e.response?.data}");
+  //   //     print("🔢 Status Code: ${e.response?.statusCode}");
+  //   //   }
+  //   // }
+
   final config = ClarityConfig(
     projectId: "stuj6bv89f", // من لوحة Clarity
     logLevel: LogLevel.Verbose, // استعماله التدريجي؛ في البيئة الحية يستخدم None
